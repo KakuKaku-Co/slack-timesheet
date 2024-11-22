@@ -771,6 +771,17 @@ export default SlackFunction(
           }),
         );
         const saved = await saveTimeEntry({ attributes, ...components });
+
+        // Slack APIを使ってユーザー情報を取得
+        const userInfo = await slackApi.users.info({ user: body.user.id }); // user_id はワークフローを実行しているユーザーのID
+        const userName = userInfo.user?.real_name || "ユーザー名不明";
+
+        // 勤務開始時のメッセージ
+        await slackApi.chat.postMessage({
+          channel: "C081T1PFWS1", // 勤怠チャンネルのID
+          text: `${userName} さんが勤務開始しました！`,
+        });
+
         const viewId = body.view.id;
         const result = await syncMainView({
           viewId,
@@ -854,7 +865,7 @@ export default SlackFunction(
     async (args) => {
       const { body } = args;
       const components = await injectComponents({ ...args });
-      const { user, offset, isLifelogEnabled } = components;
+      const { user, offset, isLifelogEnabled, slackApi } = components;
       try {
         const entry = await fetchTimeEntry({ ...components });
         const attributes = { ...entry };
@@ -869,6 +880,15 @@ export default SlackFunction(
               end, // override
             });
             const saved = await saveTimeEntry({ attributes, ...components });
+            // Slack APIを使ってユーザー情報を取得
+            const userInfo = await slackApi.users.info({ user: body.user.id }); // user_id はワークフローを実行しているユーザーのID
+            const userName = userInfo.user?.real_name || "ユーザー名不明";
+
+            // 勤務開始時のメッセージ
+            await slackApi.chat.postMessage({
+              channel: "C081T1PFWS1", // 勤怠チャンネルのID
+              text: `${userName} さんが勤務終了しました！`,
+            });
             const viewId = body.view.id;
             const result = await syncMainView({
               viewId,

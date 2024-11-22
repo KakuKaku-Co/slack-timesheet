@@ -4,8 +4,8 @@ import workflow from "../workflows/timesheet.ts";
 
 const trigger: Trigger<typeof workflow.definition> = {
   type: TriggerTypes.Shortcut,
-  name: "タイムシート",
-  description: "クリックするとタイムシート（時間管理）アプリが起動します",
+  name: "勤怠",
+  description: "クリックすると勤怠管理アプリが起動します",
   workflow: `#/workflows/${workflow.definition.callback_id}`,
   inputs: {
     interactivity: { value: TriggerContextData.Shortcut.interactivity },
