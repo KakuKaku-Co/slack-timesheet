@@ -247,7 +247,11 @@ function calculateDuratinMinutes(start: string, end: string): number {
   e.setUTCHours(Number.parseInt(endHHMM[0]));
   e.setUTCMinutes(Number.parseInt(endHHMM[1]));
 
-  const minutes = (e.getTime() - s.getTime()) / 1000 / 60;
+  let minutes = (e.getTime() - s.getTime()) / 1000 / 60;
+  if (minutes < 0) {
+    // 日付を跨いだ場合は24時間分を加算
+    minutes += 24 * 60;
+  }
   return minutes;
 }
 

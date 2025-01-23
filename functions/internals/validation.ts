@@ -22,10 +22,10 @@ export function validateLifelog(
   const errors: Record<string, string> = {};
   const _start = timeToNumber(start);
   const _end = end && end !== "" ? timeToNumber(end) : undefined;
-  if (_end && _start >= _end) {
-    errors[BlockId.End] = i18n(Label.InvalidStartAndEnd, language);
-    return errors;
-  }
+  // if (_end && _start >= _end) {
+  //   errors[BlockId.End] = i18n(Label.InvalidStartAndEnd, language);
+  //   return errors;
+  // }
   if (what_to_do.length > 50) {
     // You can customize as necessary
     errors[BlockId.WhatToDo] = i18n(Label.TooLongInput, language);
@@ -55,10 +55,10 @@ export function validateTimeEntrySubmission(
   const editTarget = edit_target ? serializeEntry(edit_target) : undefined;
   const _start = timeToNumber(start);
   const _end = end && end !== "" ? timeToNumber(end) : undefined;
-  if (_end && _start >= _end) {
-    errors[BlockId.End] = i18n(Label.InvalidStartAndEnd, language);
-    return errors;
-  }
+  // if (_end && _start >= _end) {
+  //   errors[BlockId.End] = i18n(Label.InvalidStartAndEnd, language);
+  //   return errors;
+  // }
   if (_end && type === EntryType.Work) {
     for (const e of (entry.work_entries || [])) {
       if (editTarget && serializeEntry(e) === editTarget) {
